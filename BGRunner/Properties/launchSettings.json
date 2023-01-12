@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "BGRunner": {
+      "commandName": "Project",
+      "commandLineArgs": "python -u testrun.py",
+      "workingDirectory": "E:\\Projects\\BGRunner\\BGRunner"
+    }
+  }
+}
