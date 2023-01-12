@@ -124,6 +124,7 @@ namespace BGRunner {
         }
 
         private bool KillProcess() {
+            if (target == "") return false;
             if (!process.HasExited) {
                 process.Kill();
                 return true;
@@ -132,8 +133,10 @@ namespace BGRunner {
         }
 
         private void Exit_Click(object sender, EventArgs e) {
-            KillProcess();
-            process.WaitForExit(100);
+            if (target != "") {
+                KillProcess();
+                process.WaitForExit(100);
+            }
             Application.Exit();
         }
 
@@ -142,8 +145,10 @@ namespace BGRunner {
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e) {
-            //KillProcess();
-            if (KillProcess()) e.Cancel = true;
+            if (target != "") {
+                //KillProcess();
+                if (KillProcess()) e.Cancel = true;
+            }
         }
     }
 }
