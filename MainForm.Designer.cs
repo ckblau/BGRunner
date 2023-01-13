@@ -99,7 +99,7 @@
         #endregion
         private NotifyIcon TrayIcon;
         private ContextMenuStrip TrayMenu;
-        private ToolStripMenuItem Show;
+        private new ToolStripMenuItem Show;
         private ToolStripMenuItem Exit;
         private TextBox Output;
     }

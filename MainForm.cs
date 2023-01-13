@@ -9,19 +9,20 @@ namespace BGRunner {
         private Process process = new();
         private StreamWriter? writer;
 
-        public MainForm(string[] args) {
+        public MainForm() {
             InitializeComponent();
-            ParseArgs(args);
+            ParseArgs();
         }
 
-        private void ParseArgs(string[] args) {
-            if (args.Length <= 0) return; 
-            target = args[0];
+        private void ParseArgs() {
+            string[] args = Environment.GetCommandLineArgs();
+            if (args.Length <= 1) return; 
+            target = args[1];
             target_name = target.Trim();
-            if (args.Length > 1) {
-                target_args = string.Join(" ", args[1..]);
+            if (args.Length > 2) {
+                target_args = string.Join(" ", args[2..]);
                 if (target.ToUpper() == "PYTHON" || target.ToUpper() == "PYTHON3") {
-                    target_name = args[1].Trim();
+                    target_name = args[2].Trim();
                     target_args = "-u " + target_args;
                 }
             }
