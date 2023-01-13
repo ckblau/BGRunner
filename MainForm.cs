@@ -27,7 +27,7 @@ namespace BGRunner {
                 }
             }
             DateTime now = DateTime.Now;
-            target_log = string.Format("BGRunnerLog_{0}_{1}.txt", target_name, now.ToString("yyyymmdd_HHMMssfff"));
+            target_log = string.Format("BGRunnerLog_{0}_{1}.txt", target_name, now.ToString("yyyyMMdd_HHmmssfff"));
         }
 
         private void OutputPrintLine(string line = "") {
