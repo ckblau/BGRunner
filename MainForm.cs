@@ -3,8 +3,11 @@ using System.Diagnostics;
 namespace BGRunner {
     public partial class MainForm : Form {
         private string target = "";
+        private string target_name = "";
         private string target_args = "";
+        private string target_log = "";
         private Process process = new();
+        private StreamWriter? writer;
 
         public MainForm(string[] args) {
             InitializeComponent();
@@ -12,10 +15,18 @@ namespace BGRunner {
         }
 
         private void ParseArgs(string[] args) {
-            if (args.Length == 0) target = "";
-            else target = args[0];
-            if (args.Length <= 1) target_args = "";
-            else target_args = string.Join(" ", args[1..]);
+            if (args.Length <= 0) return; 
+            target = args[0];
+            target_name = target.Trim();
+            if (args.Length > 1) {
+                target_args = string.Join(" ", args[1..]);
+                if (target.ToUpper() == "PYTHON" || target.ToUpper() == "PYTHON3") {
+                    target_name = args[1].Trim();
+                    target_args = "-u " + target_args;
+                }
+            }
+            DateTime now = DateTime.Now;
+            target_log = string.Format("BGRunnerLog_{0}_{1}.txt", target_name, now.ToString("yyyymmdd_HHMMssfff"));
         }
 
         private void OutputPrintLine(string line = "") {
@@ -28,6 +39,10 @@ namespace BGRunner {
                 }
             }
             else {
+                if (writer != null) {
+                    writer.WriteLine(line);
+                    writer.Flush();
+                }
                 Output.AppendText(line + Environment.NewLine);
                 Output.SelectionStart = Output.TextLength;
                 Output.ScrollToCaret();
@@ -35,6 +50,16 @@ namespace BGRunner {
         }
 
         private void StartProcess() {
+            try {
+                writer = new StreamWriter(target_log);
+            }
+            catch (Exception ex) {
+                OutputPrintLine("---------- BGRunner: Failed to create log file ----------");
+                OutputPrintLine(ex.Message);
+                OutputPrintLine();
+                OutputPrintLine("---------- BGRunner: Log disabled ----------");
+                OutputPrintLine();
+            }
             OutputPrintLine(string.Format("{0} {1}", target, target_args));
             OutputPrintLine();
             OutputPrintLine("---------- BGRunner: Starting process ----------");
@@ -66,6 +91,10 @@ namespace BGRunner {
             OutputPrintLine();
             OutputPrintLine(string.Format("---------- BGRunner: Process exited with code {0} ----------", process.ExitCode));
             OutputPrintLine();
+            if (writer != null) {
+                writer.Close();
+                writer = null;
+            }
         }
 
         void OutputHandler(object sendingProcess, DataReceivedEventArgs outLine) {
@@ -90,8 +119,8 @@ namespace BGRunner {
                 OutputPrintLine("    Use the tray icon to bring back.");
             }
             else {
-                Text = string.Format("BGRunner ({0})", target);
-                TrayIcon.Text = string.Format("BGRunner ({0})", target);
+                Text = string.Format("BGRunner ({0})", target_name);
+                TrayIcon.Text = string.Format("BGRunner ({0})", target_name);
                 StartProcess();
             }
         }
@@ -137,10 +166,18 @@ namespace BGRunner {
                 KillProcess();
                 process.WaitForExit(100);
             }
+            if (writer != null) {
+                writer.Close();
+                writer = null;
+            }
             Application.Exit();
         }
 
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e) {
+            if (writer != null) {
+                writer.Close();
+                writer = null;
+            }
             Application.Exit();
         }
 

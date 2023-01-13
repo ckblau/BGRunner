@@ -2,7 +2,8 @@
   "profiles": {
     "BGRunner": {
       "commandName": "Project",
-      "workingDirectory": "E:\\Projects\\BGRunner\\BGRunner"
+      "commandLineArgs": "python testrun.py",
+      "workingDirectory": ".\\"
     }
   }
 }
