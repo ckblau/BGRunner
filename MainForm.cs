@@ -145,7 +145,7 @@ namespace BGRunner {
             }
         }
 
-        private void TrayIcon_DoubleClick(object sender, EventArgs e) {
+        private void TrayIcon_Click(object sender, EventArgs e) {
             ShowWindow();
         }
 

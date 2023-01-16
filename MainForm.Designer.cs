@@ -38,7 +38,7 @@
             this.TrayIcon.ContextMenuStrip = this.TrayMenu;
             this.TrayIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("TrayIcon.Icon")));
             this.TrayIcon.Text = "BGRunner";
-            this.TrayIcon.DoubleClick += new System.EventHandler(this.TrayIcon_DoubleClick);
+            this.TrayIcon.Click += new System.EventHandler(this.TrayIcon_Click);
             // 
             // TrayMenu
             // 
