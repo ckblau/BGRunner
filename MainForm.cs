@@ -130,12 +130,14 @@ namespace BGRunner {
             TrayIcon.Visible = true;
             Visible = false;
             ShowInTaskbar = false;
+            FormBorderStyle = FormBorderStyle.FixedToolWindow;
         }
 
         private void ShowWindow() {
             TrayIcon.Visible = false;
             Visible = true;
             ShowInTaskbar = true;
+            FormBorderStyle = FormBorderStyle.Sizable;
             WindowState = FormWindowState.Normal;
         }
 
