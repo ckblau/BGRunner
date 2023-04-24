@@ -148,7 +148,9 @@ namespace BGRunner {
         }
 
         private void TrayIcon_Click(object sender, EventArgs e) {
-            ShowWindow();
+            MouseEventArgs Mouse_e = (MouseEventArgs)e;
+            if (Mouse_e.Button == MouseButtons.Left)
+                ShowWindow();
         }
 
         private void Show_Click(object sender, EventArgs e) {
